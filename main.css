@@ -1,0 +1,84 @@
+    html {
+        height: 100%;
+        overflow-y: scroll;
+    }
+    
+    body {
+        height: 100%;
+        padding-top: 50px;
+        background: url("img/background.png") repeat fixed center;
+        background-color: #428bca;
+      }
+      
+    h3 {
+        margin-top: 5px;
+    }
+    
+      .content {
+        background-color: white;
+      }
+        
+      .starter-template {
+        padding: 40px 15px;
+        text-align: center;
+      }
+      
+      .sidebar {
+        background-color: white;
+        padding: 10px;
+        height: 100%;
+      }
+      
+      .maindiv {
+        background-color: #080808;
+        padding: 10px;
+        height: 100%;
+      }
+      
+      .users {
+      }
+      
+      .whitetext {
+        color: white;
+      }
+      
+      .blacktext {
+        color: black;
+      }
+      
+      .divider {
+        border: 1px solid #080808;
+        margin-bottom: 20px;
+      }
+      
+      .games {
+        background-color: white;
+        color: #080808;
+        padding: 5px;
+        padding-left: 10px;
+      }
+      
+      .games:hover {
+        background-color: white;
+      }
+      
+      .username {
+        font-size: 16px;
+        margin-left: 10px;
+      }
+      
+      .createnew {
+        font-size: 16px;
+        margin-right: 10px;
+      }
+      
+      .profilepic {
+        height: 200px;
+        width: 200px;
+        border: solid 10px #222222;
+        margin-bottom: 10px;
+      }
+      
+      .navglyph {
+        margin-left: 10px;
+      }
