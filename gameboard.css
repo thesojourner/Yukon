@@ -1,0 +1,34 @@
+    .board {
+        margin: 0px;
+        padding: 0px;
+        background-color: white;
+        border: solid 1px #000000;
+        display: table;
+    }
+    
+    .col {
+        margin: 0px;
+        padding: 0px;
+        width: 30px;
+        float: left;
+    }
+    
+    .square {
+        margin: 0px;
+        padding: 0px;
+        width: 30px;
+        height:30px;
+        border: solid 1px #000000;
+    }
+    
+    .land {
+        
+    }
+    
+    .sea {
+        background-color: #b2b2b2;
+    }
+    
+    .obstacle {
+        background-color: #080808;
+    }
