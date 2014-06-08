@@ -4,7 +4,7 @@
 <HTML>
 <HEAD>
 <META charset="UTF-8" />
-<SCRIPT src=jquery-2.1.1.min.js></SCRIPT>
+<SCRIPT src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></SCRIPT>
 <SCRIPT>
 //tiles object, contains tileset images and properties
 var tiles = {
