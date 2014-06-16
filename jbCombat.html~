@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<HEAD>
+<META charset="UTF-8" />
+<TITLE>Jeremiah's Combat Sim</TITLE>
+<SCRIPT src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></SCRIPT>
+</HEAD>
+
+<BODY>
+<TABLE style='margin:50px'>
+    <TR>
+        <TD><INPUT type='text' id='rf1' style='width:50px;text-align:center'></TD>
+        <TD style='text-align:center'>Ranged Full</TD>
+        <TD style='text-align:right'><INPUT type='text' id='rf2' style='width:50px;text-align:center'></TD>
+    </TR>
+    <TR>
+        <TD><INPUT type='text' id='rh1' style='width:50px;text-align:center'></TD>
+        <TD style='text-align:center'>Ranged Half</TD>
+        <TD style='text-align:right'><INPUT type='text' id='rh2' style='width:50px;text-align:center'></TD>
+    </TR>
+    <TR>
+        <TD><INPUT type='text' id='mf1' style='width:50px;text-align:center'></TD>
+        <TD style='text-align:center'>Mobile Full</TD>
+        <TD style='text-align:right'><INPUT type='text' id='mf2' style='width:50px;text-align:center'></TD>
+    </TR>
+    <TR>
+        <TD><INPUT type='text' id='mh1' style='width:50px;text-align:center'></TD>
+        <TD style='text-align:center'>Mobile Half</TD>
+        <TD style='text-align:right'><INPUT type='text' id='mh2' style='width:50px;text-align:center'></TD>
+    </TR>
+    <TR>
+        <TD><INPUT type='text' id='if1' style='width:50px;text-align:center'></TD>
+        <TD style='text-align:center'>Infantry Full</TD>
+        <TD style='text-align:right'><INPUT type='text' id='if2' style='width:50px;text-align:center'></TD>
+    </TR>
+    <TR>
+        <TD><INPUT type='text' id='ih1' style='width:50px;text-align:center'></TD>
+        <TD style='text-align:center'>Infantry Half</TD>
+        <TD style='text-align:right'><INPUT type='text' id='ih2' style='width:50px;text-align:center'></TD>
+    </TR>
+    <TR>
+        <TD>
+            <SELECT id='s1' style='width:75px'>
+                <OPTION value='0'>Ranged</OPTION>
+                <OPTION value='1'>Mobile</OPTION>
+                <OPTION value='2'>Infantry</OPTION>
+            </SELECT>
+        </TD>
+        <TD style='text-align:center'>Strategy</TD>
+        <TD style='text-align:right'>
+            <SELECT id='s2' style='width:75px'>
+                <OPTION value='0'>Ranged</OPTION>
+                <OPTION value='1'>Mobile</OPTION>
+                <OPTION value='2'>Infantry</OPTION>
+            </SELECT>
+        </TD>
+    </TR>
+    <TR><TD></TD><TD></TD><TD></TD></TR>
+    <TR>
+        <TD>Terrain ></TD>
+        <TD style='text-align:center'>
+            <SELECT id='t'>
+                <OPTION value='0'>Ranged</OPTION>
+                <OPTION value='1'>Mobile</OPTION>
+                <OPTION value='2'>Infantry</OPTION>
+            </SELECT>
+        </TD>
+        <TD style='text-align:right'>< Terrain</TD>
+    </TR>
+    <TR><TD></TD><TD></TD><TD></TD></TR>
+    <TR>
+        <TD></TD>
+        <TD style='text-align:center;'><BUTTON onClick='combat()'>Combat</BUTTON></TD>
+        <TD></TD>
+    </TR>
+</TABLE>
+</BODY>
+
+<SCRIPT>
+function combat() {
+    //get values
+    var rf1 = $("#rf1").val();
+    var rf2 = $("#rf2").val();
+    var rh1 = $("#rh1").val();
+    var rh2 = $("#rh2").val();
+
+    var mf1 = $("#mf1").val();
+    var mf2 = $("#mf2").val();
+    var mh1 = $("#mh1").val();
+    var mh2 = $("#mh2").val();
+
+    var if1 = $("#if1").val();
+    var if2 = $("#if2").val();
+    var ih1 = $("#ih1").val();
+    var ih2 = $("#ih2").val();
+
+    var s1 = $("#s1").val();
+    var s2 = $("#s2").val();
+
+    var t = $("#t").val();
+
+    var strat = rmi(s1, s2);
+    alert("strat: " + strat);
+
+    //set values
+    $("#rf1").val(orf1);
+    $("#rf2").val(orf2);
+    $("#rh1").val(orh1);
+    $("#rh2").val(orh2);
+
+    $("#mf1").val(omf1);
+    $("#mf2").val(omf2);
+    $("#mh1").val(omh1);
+    $("#mh2").val(omh2);
+
+    $("#if1").val(oif1);
+    $("#if2").val(oif2);
+    $("#ih1").val(oih1);
+    $("#ih2").val(oih2);
+}
+
+function rmi(p1, p2) {
+    if(p1 == p2) {
+       return 0;
+    } else if (p1 > p2) {
+       if(p1 - p2 == 1) {
+           return 1;
+       } else {
+           return 2;
+       }
+    } else {
+       if(p2 - p1 == 1) {
+           return 2;
+       } else {
+           return 1;
+       }
+    }
+}
+</SCRIPT>
+</HTML>
+
