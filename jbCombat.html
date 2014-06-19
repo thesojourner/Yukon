@@ -3,51 +3,37 @@
 <META charset="UTF-8" />
 <TITLE>Jeremiah's Combat Sim</TITLE>
 <SCRIPT src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></SCRIPT>
+<LINK href="jbc.css" rel="stylesheet">
 </HEAD>
 
 <BODY>
-<TABLE style='margin:50px'>
+<TABLE class='inputTable'>
     <TR>
-        <TD><INPUT type='text' id='rf1' style='width:50px;text-align:center'></TD>
-        <TD style='text-align:center'>Ranged Full</TD>
-        <TD style='text-align:right'><INPUT type='text' id='rf2' style='width:50px;text-align:center'></TD>
+        <TD class='lCol'><INPUT type='text' id='r1' class='input'></TD>
+        <TD class='cCol'>Ranged</TD>
+        <TD class='rCol'><INPUT type='text' id='r2' class='input'></TD>
     </TR>
     <TR>
-        <TD><INPUT type='text' id='rh1' style='width:50px;text-align:center'></TD>
-        <TD style='text-align:center'>Ranged Half</TD>
-        <TD style='text-align:right'><INPUT type='text' id='rh2' style='width:50px;text-align:center'></TD>
+        <TD class='lCol'><INPUT type='text' id='m1' class='input'></TD>
+        <TD class='cCol'>Mobile</TD>
+        <TD class='rCol'><INPUT type='text' id='m2' class='input'></TD>
     </TR>
     <TR>
-        <TD><INPUT type='text' id='mf1' style='width:50px;text-align:center'></TD>
-        <TD style='text-align:center'>Mobile Full</TD>
-        <TD style='text-align:right'><INPUT type='text' id='mf2' style='width:50px;text-align:center'></TD>
+        <TD class='lCol'><INPUT type='text' id='i1' class='input'></TD>
+        <TD class='cCol'>Infantry</TD>
+        <TD class='rCol'><INPUT type='text' id='i2' class='input'></TD>
     </TR>
     <TR>
-        <TD><INPUT type='text' id='mh1' style='width:50px;text-align:center'></TD>
-        <TD style='text-align:center'>Mobile Half</TD>
-        <TD style='text-align:right'><INPUT type='text' id='mh2' style='width:50px;text-align:center'></TD>
-    </TR>
-    <TR>
-        <TD><INPUT type='text' id='if1' style='width:50px;text-align:center'></TD>
-        <TD style='text-align:center'>Infantry Full</TD>
-        <TD style='text-align:right'><INPUT type='text' id='if2' style='width:50px;text-align:center'></TD>
-    </TR>
-    <TR>
-        <TD><INPUT type='text' id='ih1' style='width:50px;text-align:center'></TD>
-        <TD style='text-align:center'>Infantry Half</TD>
-        <TD style='text-align:right'><INPUT type='text' id='ih2' style='width:50px;text-align:center'></TD>
-    </TR>
-    <TR>
-        <TD>
-            <SELECT id='s1' style='width:75px'>
+        <TD class='lCol'>
+            <SELECT id='s1' class='select'>
                 <OPTION value='0'>Ranged</OPTION>
                 <OPTION value='1'>Mobile</OPTION>
                 <OPTION value='2'>Infantry</OPTION>
             </SELECT>
         </TD>
-        <TD style='text-align:center'>Strategy</TD>
-        <TD style='text-align:right'>
-            <SELECT id='s2' style='width:75px'>
+        <TD class='cCol'>Strategy</TD>
+        <TD class='rCol'>
+            <SELECT id='s2' class='select'>
                 <OPTION value='0'>Ranged</OPTION>
                 <OPTION value='1'>Mobile</OPTION>
                 <OPTION value='2'>Infantry</OPTION>
@@ -56,42 +42,41 @@
     </TR>
     <TR><TD></TD><TD></TD><TD></TD></TR>
     <TR>
-        <TD>Terrain ></TD>
-        <TD style='text-align:center'>
+        <TD class='lCol'>Terrain ></TD>
+        <TD class='cCol'>
             <SELECT id='t'>
                 <OPTION value='0'>Ranged</OPTION>
                 <OPTION value='1'>Mobile</OPTION>
                 <OPTION value='2'>Infantry</OPTION>
             </SELECT>
         </TD>
-        <TD style='text-align:right'>< Terrain</TD>
+        <TD class='rCol'>< Terrain</TD>
     </TR>
     <TR><TD></TD><TD></TD><TD></TD></TR>
     <TR>
-        <TD></TD>
-        <TD style='text-align:center;'><BUTTON onClick='combat()'>Combat</BUTTON></TD>
-        <TD></TD>
+        <TD class='lCol'></TD>
+        <TD class='cCol'><BUTTON onClick='combat()'>Combat</BUTTON></TD>
+        <TD class='rCol'></TD>
     </TR>
 </TABLE>
 </BODY>
 
 <SCRIPT>
 function combat() {
+    var damRate = [.2, .4, .6];
+
     //get values
-    var rf1 = $("#rf1").val();
-    var rf2 = $("#rf2").val();
-    var rh1 = $("#rh1").val();
-    var rh2 = $("#rh2").val();
+    var p1 = [];
+    var p2 = [];
+    
+    p1[0] = $("#r1").val();
+    p2[0] = $("#r2").val();
 
-    var mf1 = $("#mf1").val();
-    var mf2 = $("#mf2").val();
-    var mh1 = $("#mh1").val();
-    var mh2 = $("#mh2").val();
+    p1[1] = $("#m1").val();
+    p2[1] = $("#m2").val();
 
-    var if1 = $("#if1").val();
-    var if2 = $("#if2").val();
-    var ih1 = $("#ih1").val();
-    var ih2 = $("#ih2").val();
+    p1[2] = $("#i1").val();
+    p2[2] = $("#i2").val();
 
     var s1 = $("#s1").val();
     var s2 = $("#s2").val();
@@ -99,23 +84,77 @@ function combat() {
     var t = $("#t").val();
 
     var strat = rmi(s1, s2);
-    alert("strat: " + strat);
+
+    var it1 = s1;
+    var it2 = s2;
+    for(var i=0; i<3; i++) {
+        var unit1 = p1[it1];
+        var unit2 = p2[it2];
+        var rate1 = damRate[it1];
+        var rate2 = damRate[it2];
+        var dam1 = 0;
+        var dam2 = 0;
+
+        if(strat == 2 && s1 == unit1) {
+            rate1 -= .1;
+        }
+        if(strat == 1 && s2 == unit2) {
+            rate2 -= .1;
+        }
+        
+        if(s1 == t) {
+            rate1 += .1;
+        }
+        if(s1 == t) {
+            rate1 += .1;
+        }
+
+        dam1 = Math.floor(unit1 * rate1);
+        dam2 = Math.floor(unit2 * rate2);
+
+        for(var n=0; n<3; n++) {
+            p2[n] -= Math.floor(dam1/3);
+            if(p2[n] < 0) {
+                p2[n] = 0;
+            }
+            p1[n] -= Math.floor(dam2/3);
+            if(p1[n] < 0) {
+                p1[n] = 0;
+            }
+        }
+
+        if(p2[it2]) {
+            p2[it2] -= dam1 % 3;
+        }
+        if(p1[it1]) {
+            p1[it1] -= dam2 % 3;
+        }
+        
+        if(isAlive(p1) && isAlive(p2)) {
+            if(it1 < 2) {
+                it1++;
+            } else {
+                it1 = 0;
+            }
+            if(it2 < 2) {
+                it2++;
+            } else {
+                it2 = 0;
+            }
+        } else {
+            break;
+        }
+    }
 
     //set values
-    $("#rf1").val(orf1);
-    $("#rf2").val(orf2);
-    $("#rh1").val(orh1);
-    $("#rh2").val(orh2);
+    $("#r1").val(p1[0]);
+    $("#r2").val(p2[0]);
 
-    $("#mf1").val(omf1);
-    $("#mf2").val(omf2);
-    $("#mh1").val(omh1);
-    $("#mh2").val(omh2);
+    $("#m1").val(p1[1]);
+    $("#m2").val(p2[1]);
 
-    $("#if1").val(oif1);
-    $("#if2").val(oif2);
-    $("#ih1").val(oih1);
-    $("#ih2").val(oih2);
+    $("#i1").val(p1[2]);
+    $("#i2").val(p2[2]);
 }
 
 function rmi(p1, p2) {
@@ -135,6 +174,15 @@ function rmi(p1, p2) {
        }
     }
 }
+
+function isAlive(a) {
+    if(a[0] + a[1] + a[2]) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 </SCRIPT>
 </HTML>
 

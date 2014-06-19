@@ -1,0 +1,19 @@
+.lCol {
+    text-align:left;
+}
+.cCol {
+    text-align:center;
+}
+.rCol {
+    text-align:right;
+}
+.inputTable{
+    margin:50px;
+}
+.input {
+    width:50px;
+    text-align:center;
+}
+.select {
+    width:75px;
+}
