@@ -1,0 +1,45 @@
+<html>
+<header>
+<p>This is the Dice Roll </p>
+</header>
+<body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+
+$(document).ready(function(){
+  $("button").click(function(){
+    $("#div1").load("diceroll.html");
+  });
+});
+
+function doRefresh(){
+	location.reload();
+}
+
+
+	var army = 400;	
+	var bonus = Math.round(Math.random() *10) /100;
+	console.log("Bonus: " + bonus);
+
+	var sign = Math.ceil(Math.random() *2 );	
+	console.log("sign: "+ sign);
+	
+	if(sign == 2){
+		bonus = bonus * -1;
+	}
+
+	console.log("Final bonus multiplier: " + bonus);
+
+	var army_difference = army * bonus;
+	
+	army = army + army_difference;
+
+	console.log("final army strength: " + army);
+</script>
+<div id="div1"><h2>YOU WILL SEE THE COOL STUFF HAPPEN</h2></div>
+<button>push button to roll dice</button>
+
+	<!--<theFrom action="diceroll.html" method="get"> 
+<input type="button" value="Refresh" onClick='doRefresh();'>-->
+</body>
+</html>
