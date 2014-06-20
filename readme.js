@@ -9,7 +9,7 @@ statement(delimiter)(function(){
 	if() { 
 	//supercode
 	} else {
-	//othera;slkdjfs;lkdfjas;lkdfjsupercode
+	//othersupercode
 	}elseif{
 	//moresupercode
 	};
