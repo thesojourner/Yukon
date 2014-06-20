@@ -1,4 +1,37 @@
 
+<?php
+
+require "scripts/connect.php";
+
+//initialize variables
+$name = $pass = "";
+
+//check for the POST request, get login info
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$name = test_input($_POST["name"]);
+	$pass = md5(test_input($_POST["pass"])); //passwords should be md5-hashed when stored
+    //check user and pass in database
+	$result = mysqli_query($con, "SELECT * FROM Users WHERE Name='$name' and Pass='$pass'");
+    //should have exactly one row if successful
+	if (mysqli_num_rows($result) == 1) {
+        //set login info as session variables (persistent, client-side)
+		$_SESSION['name'] = $name;
+        //redirect to main page
+		header('Location: scripts/main.php');
+	} else {
+		echo "Wrong Username or Password";
+	}
+}
+
+//prevent injection
+function test_input($data) {
+	$data = trim($data);
+	$data = stripslashes($data);
+	$data = htmlspecialchars($data);
+	return $data;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -36,16 +69,11 @@
             <li class="active"><a href="#">Home</a></li>
             <li><a href="games.php">Games</a></li>
           </ul>
-          <form class="navbar-form navbar-right" role="form">
-              <a class="createnew" href="#">Create Account</a>
-            <div class="form-group">
-              <input type="text" placeholder="Username" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
+          <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+	   <input type="text" name="name" placeholder="username"><br>
+	   <input type="password" name="pass" placeholder="password"><br>
+	   <input type="submit" value="Login">
+	</form>
         </div>
       </div> <!-- Container -->
     </div>
