@@ -52,8 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $troops[$attackX][$attackY] = 1;
     }else{
         
-        $troops[$defendX][$defendY] = 1
-        $troops[$attackX][$attackY] = 1
+        $troops[$defendX][$defendY] = 1;
+        $troops[$attackX][$attackY] = 1;
     }
     
     
