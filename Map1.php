@@ -13,8 +13,9 @@ $troopsJson = file_get_contents("Games/Game1/troops.json");
 
 $map = json_decode($mapJson);
 $troops = json_decode($troopsJson);
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	$attackJson = $_POST["attack"];
+    $attackJson = $_POST["attack"];
     $defendJson = $_POST["defend"];
     
     $attackArray = json_decode($attackJson);
@@ -48,13 +49,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $map[$defendX][$defendY] = $attackPlayer;
         $troops[$defendX][$defendY] = $attackTroops;
-        
+        $troops[$attackX][$attackY] = 1;
     }else{
-        $attackTroops = 1;
-        $defendTroops = 1;
         
-        $troops[$defendX][$defendY] = $defendTroops;
-        $troops[$attackX][$attackY] = $attackTroops;
+        $troops[$defendX][$defendY] = 1
+        $troops[$attackX][$attackY] = 1
     }
     
     
@@ -76,7 +75,7 @@ w: 50,
 h: 50,
 };
 tiles.img = new Image();
-tiles.img.src = "img/tiles.png";
+tiles.img.src = "tiles.png";
 
 //map object contains map info and cells array
 var map = {
