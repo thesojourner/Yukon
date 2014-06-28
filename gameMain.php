@@ -8,8 +8,9 @@
 <SCRIPT src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></SCRIPT>
 <?
 
-$mapJson = file_get_contents("Games/Game1/map.json");
-$troopsJson = file_get_contents("Games/Game1/troops.json");
+$gameDir = "Game1";
+$mapJson = file_get_contents("Games/$gameDir/map.json");
+$troopsJson = file_get_contents("Games/$gameDir/troops.json");
 
 $map = json_decode($mapJson);
 $troops = json_decode($troopsJson);
