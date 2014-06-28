@@ -1,11 +1,11 @@
 <?php
+
 ?>
 <!DOCTYPE HTML>
 <HTML>
 <HEAD>
 <META charset="UTF-8" />
 <SCRIPT src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></SCRIPT>
-
 <?
 
 $mapJson = file_get_contents("Games/Game1/map.json");
@@ -17,57 +17,105 @@ $troops = json_decode($troopsJson);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $attackJson = $_POST["attack"];
     $defendJson = $_POST["defend"];
+    //echo "<P>$attackJson</P>";
+    //echo "<P>$defendJson</P>";
     
     $attackArray = json_decode($attackJson);
-    $defendArray = json_decode($defendJson);    
-    
+    $defendArray = json_decode($defendJson);
+
+    //retrieve coordinates for attacker and defender
     $attackX = $attackArray[0];
     $attackY = $attackArray[1];
     
     $defendX = $defendArray[0];
     $defendY = $defendArray[1];
-    //Get attack & defend values out of arrays
-    
+
+    $error = false;
+    //validate adjacent tiles
+    if(abs($attackX-$defendX) > 1){
+	?>
+	<SCRIPT>
+		alert("You must attack an adjacent tile (diagonals count!)");
+	</SCRIPT>
+	<?
+	$error = true;
+    }
+
+    if(abs($attackY-$defendY) > 1){
+	?>
+	<SCRIPT>
+		alert("You must attack an adjacent tile(diagonals count)!");
+	</SCRIPT>
+	<?
+	$error = true;
+    }
+
+    //get owner and troop count for combatants
     $attackPlayer = $map[$attackX][$attackY];
     $attackTroops = $troops[$attackX][$attackY];
+    //echo "<p>A: $attackPlayer, $attackTroops</P>";
     
     $defendPlayer = $map[$defendX][$defendY];
     $defendTroops = $troops[$defendX][$defendY];
-    
-    //Combat calculations
-    if($attackTroops < $defendTroops){
-        $attackTroops--;
-        $defendTroops = $defendTroops-$attackTroops;
-        $attackTroops = 1;
-        
-        $troops[$defendX][$defendY] = $defendTroops;
-        $troops[$attackX][$attackY] = $attackTroops;
-        
-    }elseif($attackTroops > $defendTroops){
-        $attackTroops--;
-        $attackTroops = $attackTroops-$defend;
-        
-        $map[$defendX][$defendY] = $attackPlayer;
-        $troops[$defendX][$defendY] = $attackTroops;
-        $troops[$attackX][$attackY] = 1;
-    }else{
-        
-        $troops[$defendX][$defendY] = 1;
-        $troops[$attackX][$attackY] = 1;
+    //echo "<p>D: $defendPlayer, $defendTroops</P>";
+
+    //validate enemy
+    if($attackPlayer == $defendPlayer){
+	?>
+	<SCRIPT>
+		alert("You must attack an enemy tile!");
+	</SCRIPT>
+	<?
+	$error = true;
     }
+
+    //attacker must have > 1 troop
+    if($attackTroops == 1){
+	?>
+	<SCRIPT>
+		alert("You must have more than 1 troop to attack!");
+	</SCRIPT>
+	<?
+	$error = true;
+    }
+
+    if($error == false){
+
+        //Combat calculations
+        if($attackTroops < $defendTroops){
+            $attackTroops--;
+            $defendTroops = $defendTroops-$attackTroops;
+            $attackTroops = 1;
+        
+            $troops[$defendX][$defendY] = $defendTroops;
+            $troops[$attackX][$attackY] = $attackTroops;
+        
+        }elseif($attackTroops > $defendTroops){
+            $attackTroops--;
+	    $attackTroops = $attackTroops-$defendTroops;
+	    //quick fix for attacker having only 1 more troop than defender
+	    if($attackTroops == 0){
+		$attackTroops = 1;
+	    }
+            $map[$defendX][$defendY] = $attackPlayer;
+            $troops[$defendX][$defendY] = $attackTroops;
+            $troops[$attackX][$attackY] = 1;
+        }else{
+        
+            $troops[$defendX][$defendY] = 1;
+            $troops[$attackX][$attackY] = 1;
+        }
     
+        $mapJson = json_encode($map);
+        file_put_contents("Games/Game1/map.json", $mapJson);
     
-    
-    
-    $mapJson = json_encode($map);
-    file_put_contents("Games/Game1/map.json",$map);
-    
-    $troopsJson = json_encode($troops);
-    file_put_contents("Games/Game1/troops.json",$troops);
-    
+        $troopsJson = json_encode($troops);
+        file_put_contents("Games/Game1/troops.json", $troopsJson);
+    }    
 }
 
 ?>
+
 <SCRIPT>
 //tiles object, contains tileset images and properties
 var tiles = {
@@ -111,7 +159,7 @@ ctx.drawImage(this.img, xTile * this.w, yTile * this.h, this.w, this.h, xDraw * 
 };
 
 tiles.text = function(text, xDraw, yDraw) {
-ctx.fillText(text, xDraw * this.w, yDraw * this.h);
+ctx.fillText(text, (xDraw + .5) * this.w, (yDraw + .5) * this.h);
 };
 
 //loop through each cell and draw the correct tile
@@ -155,17 +203,17 @@ var form = document.createElement("form");
 form.setAttribute("method", "post");
 form.setAttribute("action", "<?echo $_SERVER['PHP_SELF']?>");
 
-var input = document.createElement("input");
-input.setAttribute("type", "hidden");
-input.setAttribute("name", "attack");
-input.setAttribute("value", aJson);
-form.appendChild(input);
+var aInput = document.createElement("input");
+aInput.setAttribute("type", "hidden");
+aInput.setAttribute("name", "attack");
+aInput.setAttribute("value", aJson);
+form.appendChild(aInput);
 
-var input = document.createElement("input");
-input.setAttribute("type", "hidden");
-input.setAttribute("name", "attack");
-input.setAttribute("value", dJson);
-form.appendChild(input);
+var dInput = document.createElement("input");
+dInput.setAttribute("type", "hidden");
+dInput.setAttribute("name", "defend");
+dInput.setAttribute("value", dJson);
+form.appendChild(dInput);
 
 document.body.appendChild(form);
 form.submit();
@@ -178,6 +226,5 @@ document.body.removeChild(form);
 
 <BODY>
 <CANVAS id="canvas"></CANVAS>
-<DIV><BUTTON id="save" onClick="saveMap()">Save</BUTTON></DIV>
 </BODY>
 </HTML>
