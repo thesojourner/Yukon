@@ -30,9 +30,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $defendX = $defendArray[0];
     $defendY = $defendArray[1];
 
+    $mapX = end(array_values($map));
+    foreach($map as $x){
+	    $lastY = end(array_values($x));
+	    if($lastY > $mapY){
+		    $mapY = $lastY;
+	    }
+    }
+
     $error = false;
+    
+
+    //validate x and y < mapsize
+    if($attackX > $mapX || $defendX > $mapX || $attackX < 0 || $defendX < 0 && $error == false){
+        ?>
+	<SCRIPT>
+		alert("You must select a tile on the map!");
+	</SCRIPT>
+	<?
+	$error = true;
+    }
     //validate adjacent tiles
-    if(abs($attackX-$defendX) > 1){
+    if(abs($attackX-$defendX) > 1 && $error == false){
 	?>
 	<SCRIPT>
 		alert("You must attack an adjacent tile (diagonals count!)");
@@ -41,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$error = true;
     }
 
-    if(abs($attackY-$defendY) > 1){
+    if(abs($attackY-$defendY) > 1 && $error == false){
 	?>
 	<SCRIPT>
 		alert("You must attack an adjacent tile(diagonals count)!");
@@ -60,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //echo "<p>D: $defendPlayer, $defendTroops</P>";
 
     //validate enemy
-    if($attackPlayer == $defendPlayer){
+    if($attackPlayer == $defendPlayer && $error == false){
 	?>
 	<SCRIPT>
 		alert("You must attack an enemy tile!");
@@ -70,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     //attacker must have > 1 troop
-    if($attackTroops == 1){
+    if($attackTroops == 1 && $error == false){
 	?>
 	<SCRIPT>
 		alert("You must have more than 1 troop to attack!");
