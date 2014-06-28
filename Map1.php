@@ -75,7 +75,7 @@ w: 50,
 h: 50,
 };
 tiles.img = new Image();
-tiles.img.src = "tiles.png";
+tiles.img.src = "img/tiles.png";
 
 //map object contains map info and cells array
 var map = {
